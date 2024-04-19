@@ -1,0 +1,197 @@
+﻿@model ProjectMillenium.Web.Models.RoleClaimViewModel
+
+@{
+    Layout = "_Layout";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AddRoleClaim</title>
+    <style>
+        .styled-table {
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.9em;
+            font-family: sans-serif;
+            min-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+
+            .styled-table thead tr {
+                background-color: #009879;
+                color: white;
+                text-align: left;
+            }
+
+            .styled-table th, .styled-table td {
+                padding: 12px 15px;
+            }
+
+            .styled-table tbody tr {
+                border-bottom: 1px solid #dddddd;
+            }
+
+                .styled-table tbody tr:nth-of-type(even) {
+                    background-color: #f3f3f3;
+                }
+
+                .styled-table tbody tr:last-of-type {
+                    border-bottom: 2px solid #009879;
+                }
+
+                .styled-table tbody tr.active-row {
+                    font-weight: bold;
+                    color: #009879;
+                }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#btnSend').click(function (e) {
+                e.preventDefault();
+
+                var roleId = $('#Id').val();
+                var selectedClaims = [];
+                $('input.checkClaimSelect:checkbox:checked').each(function () {
+                    selectedClaims.push($(this).val());
+                });
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Role/AddRoleClaim',
+                    data: {
+                        roleId: roleId,
+                        claims: selectedClaims
+                    },
+                    success: function (response) {
+               
+                        console.log('Claims eklendi');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div>
+        <h2>Mevcut Roller</h2>
+
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Rol Adı</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var role in Model.RoleClaims)
+                {
+                    <tr>
+                        <td>@role.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <h2>Claimler</h2>
+
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Claim Adı</th>
+                    <th>Seç</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var claim in Model.allClaims)
+                {
+                    <tr>
+                        <td>@claim.Name</td>
+                        <td>
+                            <input type="checkbox" class="checkClaimSelect" value="@claim.Id" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <form method="post" action="/Role/AddRoleClaim">
+        <input type="hidden" id="Id" value="@Model.RoleId" />
+        <button type="submit" id="btnSend">Claim Ekle</button>
+        <a href="/Role/Index">Roller Listesine Geri Dön</a>
+    </form>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            @* <thead>
+                <tr>
+                    <th>Seç</th>
+                    <th>Rol Adı</th>
+                </tr>
+            </thead>
+
+            @foreach (var role in Model.RoleClaims)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" class="checkUserRoleSelect" id="chkUserRole_@role.Id" value="@role.Id" />
+                    </td>
+                    <td>@role.Name</td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <div>
+        <br>
+        <h2>Claimler</h2>
+
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Seç</th>
+                    <th>Claim Adı</th>
+                </tr>
+            </thead>
+            @foreach (var claim in Model.allClaims)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" class="checkClaimSelect" id="chkClaim_@claim.Id" value="@claim.Id" />
+                    </td>
+                    <td>@claim.Name</td>
+                </tr>
+            }
+        </table>
+        <br>
+    </div>
+
+    <form asp-action="AddRoleClaim" method="post">
+        <input type="hidden" id="Id" value="@Model.RoleId" />
+        <button type="submit" id="btnSend">Claim Ekle</button>
+        <a asp-action="Index">Kullanıcı Listesine Geri Dön</a>
+    </form>
+</body>
+</html>
+ *@

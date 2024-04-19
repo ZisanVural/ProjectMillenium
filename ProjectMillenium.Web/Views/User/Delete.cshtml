@@ -1,0 +1,61 @@
+﻿@model ProjectMillenium.Web.Models.UserViewModel
+@{
+    Layout = "_Layout";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete</title>
+</head>
+<body>
+
+    <h3>Bu kişiyi silmek istediğinizden emin misiniz?</h3>
+    <div>
+
+        <hr />
+        <dl class="row">
+
+            <dt class="col-sm-2">
+                @* @Html.DisplayNameFor(model => model.Name)*@Ad
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @*@Html.DisplayNameFor(model => model.Lastname)*@Soyad
+
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Lastname)
+            </dd>
+            <dt class="col-sm-2">
+                @*@Html.DisplayNameFor(model => model.Username)*@Kullanıcı Adı
+
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Username)
+            </dd>
+            <dt class="col-sm-2">
+                @*@Html.DisplayNameFor(model => model.Email)*@Email
+
+            </dt>
+
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+
+
+        </dl>
+        <form asp-action="DeleteUser">
+            <input type="hidden" asp-for="Id" />
+ 
+            <input type="submit" value="Sil" class="btn btn-danger" /> |
+            
+            <a asp-action="Index">Kişi Listesine Geri Dön</a>
+        </form>
+    </div>
+</body>
+</html>

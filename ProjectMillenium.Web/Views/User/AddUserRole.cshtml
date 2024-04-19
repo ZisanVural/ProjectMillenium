@@ -1,0 +1,162 @@
+﻿@model ProjectMillenium.Web.Models.UserRoleViewModel
+@{
+    Layout = "_Layout";
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AddUserRole</title>
+    <style>
+        .styled-table {
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.9em;
+            font-family: sans-serif;
+            min-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+
+            .styled-table thead tr {
+                background-color: #009879;
+                color: black;
+                text-align: left;
+            }
+
+            .styled-table th,
+            .styled-table td {
+                padding: 12px 15px;
+            }
+
+            .styled-table tbody tr {
+                border-bottom: 1px solid #dddddd;
+            }
+
+                .styled-table tbody tr:nth-of-type(even) {
+                    background-color: #f3f3f3;
+                }
+
+                .styled-table tbody tr:last-of-type {
+                    border-bottom: 2px solid #009879;
+                }
+
+                .styled-table tbody tr.active-row {
+                    font-weight: bold;
+                    color: #009879;
+                }</style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#btnSend').click(function (e) {
+                e.preventDefault();
+
+
+                var userId = $('#Id').val();
+                var selectedRoles = [];
+                $('input.checkRoleSelect:checkbox:checked').each(function () {
+                    selectedRoles.push($(this).val());
+                });
+                $.ajax({
+                    type: 'POST',
+                    url: '/User/AddUserRole',
+                    data: {
+                        userId: userId,
+                        roles: selectedRoles
+                    },
+                    success: function (response) {
+                        
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $.ajax({
+            type: 'POST',
+            url: '/User/RemoveUserRole',
+            data: {
+                userId: userId,
+                roles: selectedRoles
+            },
+            success: function (response) {
+                if (response.success) {
+                } else {
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    </script>
+  
+
+</head>
+<body>
+    <div>
+        <h2>Mevcut Roller</h2>
+
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Seç</th>
+                    <th>Rol Adı</th>
+                </tr>
+            </thead>
+          
+            @foreach (var role in Model.UserRoles)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" class="checkUserRoleSelect" id="chkUserRole_+@role.Id" value="@role.Id" />
+                    </td>
+                    <td>@role.Name</td>
+
+                </tr>
+            }
+        </table>
+    </div>
+    <div>
+        <br>
+        <h2>Roller</h2>
+
+        <table class="styled-table">
+            
+            <thead>
+                <tr>
+                <th>Seç</th>
+                <th>Rol Adı</th>
+
+            </tr>
+            </thead>
+           
+            @foreach (var role in Model.allRoles)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" class="checkRoleSelect" id="chkRole_+@role.Id" value="@role.Id" />
+                    </td>
+                    <td>@role.Name</td>
+
+                </tr>
+            }
+        </table>
+        <br>
+    </div>
+    <form asp-action="AddUserRole">
+        <input type="hidden" id="Id" value="@Model.UserId" />
+        <button type="submit" id="btnSend">Rol Ata</button> |
+        <a asp-action="Index">Kullanıcı Listesine Geri Dön</a>
+    </form>
+</body>
+</html>
+
+
+
+
+
